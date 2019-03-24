@@ -2,48 +2,37 @@ package com.csc625.checkin.recordmapper;
 
 import static com.csc625.checkin.database.tables.Student.STUDENT;
 
+import com.csc625.checkin.model.pojo.User;
+import javassist.bytecode.stackmap.TypeData;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 
 import com.csc625.checkin.model.pojo.Student;
 
+import java.util.logging.Logger;
+
 public class StudentRecordMapper implements RecordMapper<Record,Student>
 {
+    private static final Logger LOGGER = Logger.getLogger(TypeData.ClassName.class.getName());
+
     public Student map(Record r) 
     {
-        /*return new Student(r.getValue(STUDENT.FIRST_NAME),
-                           r.getValue(STUDENT.LAST_NAME),
-                           r.getValue(STUDENT.ID),
-                           r.getValue(STUDENT.DATE_OF_BIRTH),
-                           r.getValue(STUDENT.SSN),
-                           r.getValue(STUDENT.ADDRESS_1),
-                           r.getValue(STUDENT.ADDRESS_2),
-                           r.getValue(STUDENT.CITY),
-                           r.getValue(STUDENT.STATE),
-                           r.getValue(STUDENT.ZIP_CODE),
-                           r.getValue(STUDENT.GRADE),
-                           r.getValue(STUDENT.MOTHER_FIRST_NAME),
-                           r.getValue(STUDENT.MOTHER_LAST_NAME),
-                           r.getValue(STUDENT.MOTHER_SSN),
-                           r.getValue(STUDENT.MOTHER_ADDRESS_1),
-                           r.getValue(STUDENT.MOTHER_ADDRESS_2),
-                           r.getValue(STUDENT.MOTHER_CITY),
-                           r.getValue(STUDENT.MOTHER_STATE),
-                           r.getValue(STUDENT.MOTHER_ZIP_CODE),
-                           r.getValue(STUDENT.MOTHER_HOME_PHONE),
-                           r.getValue(STUDENT.MOTHER_CELL_PHONE),
-                           r.getValue(STUDENT.MOTHER_EMAIL),
-                           r.getValue(STUDENT.FATHER_FIRST_NAME),
-                           r.getValue(STUDENT.FATHER_LAST_NAME),
-                           r.getValue(STUDENT.FATHER_SSN),
-                           r.getValue(STUDENT.FATHER_ADDRESS_1),
-                           r.getValue(STUDENT.FATHER_ADDRESS_2),
-                           r.getValue(STUDENT.FATHER_CITY),
-                           r.getValue(STUDENT.FATHER_STATE),
-                           r.getValue(STUDENT.FATHER_ZIP_CODE),
-                           r.getValue(STUDENT.FATHER_HOME_PHONE),
-                           r.getValue(STUDENT.FATHER_CELL_PHONE),
-                           r.getValue(STUDENT.FATHER_EMAIL));*/
-        return null;
+        User user = new User();
+
+        LOGGER.info("VALUE:" + r.getValue(STUDENT.ACTIVE));
+        LOGGER.info("VALUE:" + r.getValue(STUDENT.ID));
+        LOGGER.info("TEST:" + STUDENT.USER_ID);
+        LOGGER.info("NAME:" + r.getValue(STUDENT.FIRSTNAME));
+        LOGGER.info("VALUE:" + r.getValue(STUDENT.USER_ID));
+
+        if(STUDENT.USER_ID != null) {
+            user = new User(r.getValue(STUDENT.USER_ID));
+        }
+
+        return new Student(r.getValue(STUDENT.ID),
+                            r.getValue(STUDENT.ACTIVE),
+                            r.getValue(STUDENT.FIRSTNAME),
+                            r.getValue(STUDENT.LASTNAME),
+                            user);
     }
 }

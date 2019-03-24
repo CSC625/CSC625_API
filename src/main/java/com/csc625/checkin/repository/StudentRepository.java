@@ -10,6 +10,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface StudentRepository extends CrudRepository<Student, String>
 {
     List<Student> findById(String Id);
-
 	Student findStudent(StudentDTO studentDto);
+    List<Student> findLinkedStudents(int userID);
 }

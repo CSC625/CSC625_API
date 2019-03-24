@@ -32,17 +32,15 @@ public class UserRepositoryImpl implements UserRepository {
 		String firstName = user.getFirstName();
 		String lastName = user.getLastName();
 		
-		/*User inUser = this.dslContext.insertInto(USER,
+		User inUser = this.dslContext.insertInto(USER,
 						USER.EMAIL,
 						USER.UID,
 						USER.LAST_LOGIN,
-						USER.INVALID_ATTEMPTS,
 						USER.ACTIVE,
-						USER.ROLE_ID,
 						USER.FIRSTNAME,
 						USER.LASTNAME)
-						.values(username, uid, lastLogin, invalidAttempts, active, role.getRoleID(), firstName, lastName)
-						.returning(USER.ID, USER.EMAIL, USER.UID, USER.LAST_LOGIN, USER.INVALID_ATTEMPTS, USER.ACTIVE, USER.ROLE_ID, USER.FIRSTNAME, USER.LASTNAME)
+						.values(username, uid, lastLogin, active, firstName, lastName)
+						.returning(USER.ID, USER.EMAIL, USER.UID, USER.LAST_LOGIN, USER.ACTIVE, USER.FIRSTNAME, USER.LASTNAME)
 						.fetchOne()
 						.map(new UserRecordMapper());
 		
@@ -52,9 +50,8 @@ public class UserRepositoryImpl implements UserRepository {
         	   LOGGER.info("Successfully added User to DB: " + newUser.toString());
         }
         
-		return (S)newUser;*/
+		return (S)newUser;
 
-		return null;
 	}
 
 	@Override
@@ -143,6 +140,11 @@ public class UserRepositoryImpl implements UserRepository {
 	public void deleteAll() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public Boolean logUserLogin(String id) {
+		return true;
 	}
 
 }

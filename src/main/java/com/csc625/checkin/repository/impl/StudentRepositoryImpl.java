@@ -90,47 +90,16 @@ public class StudentRepositoryImpl implements StudentRepository
     @Override
     public Iterable<Student> findAll() 
     {
-        /*List<Student> students = new ArrayList<Student>();
-        students = this.dslContext.select(STUDENT.FIRST_NAME,
-                                     STUDENT.LAST_NAME,
-                                     STUDENT.ID,
-                                     STUDENT.DATE_OF_BIRTH,
-                                     STUDENT.SSN,
-                                     STUDENT.ADDRESS_1,
-                                     STUDENT.ADDRESS_2,
-                                     STUDENT.CITY,
-                                     STUDENT.STATE,
-                                     STUDENT.ZIP_CODE,
-                                     STUDENT.GRADE,
-                                     STUDENT.MOTHER_FIRST_NAME,
-                                     STUDENT.MOTHER_LAST_NAME,
-                                     STUDENT.MOTHER_SSN,
-                                     STUDENT.MOTHER_ADDRESS_1,
-                                     STUDENT.MOTHER_ADDRESS_2,
-                                     STUDENT.MOTHER_CITY, 
-                                     STUDENT.MOTHER_STATE,
-                                     STUDENT.MOTHER_ZIP_CODE,
-                                     STUDENT.MOTHER_HOME_PHONE,
-                                     STUDENT.MOTHER_CELL_PHONE,
-                                     STUDENT.MOTHER_EMAIL,
-                                     STUDENT.FATHER_FIRST_NAME,
-                                     STUDENT.FATHER_LAST_NAME,
-                                     STUDENT.FATHER_SSN,
-                                     STUDENT.FATHER_ADDRESS_1,
-                                     STUDENT.FATHER_ADDRESS_2,
-                                     STUDENT.FATHER_CITY, 
-                                     STUDENT.FATHER_STATE,
-                                     STUDENT.FATHER_ZIP_CODE,
-                                     STUDENT.FATHER_HOME_PHONE,
-                                     STUDENT.FATHER_CELL_PHONE,
-                                     STUDENT.FATHER_EMAIL)
-                             .from(STUDENT)
-                             .fetch()
-                             .map(new StudentRecordMapper());
-        return students;*/
-
-        return null;
-
+        List<Student> students = new ArrayList<Student>();
+        students = this.dslContext.select(STUDENT.ID,
+                STUDENT.ACTIVE,
+                STUDENT.FIRSTNAME,
+                STUDENT.LASTNAME,
+                STUDENT.USER_ID)
+                .from(STUDENT)
+                .fetch()
+                .map(new StudentRecordMapper());
+        return students;
     }
 
     public Iterable<Student> findAll(Iterable<String> arg0) 
@@ -143,63 +112,33 @@ public class StudentRepositoryImpl implements StudentRepository
     public Student findOne(String arg0) 
     {
         List<Student> students = new ArrayList<Student>();
-        /*int studentId = Integer.parseInt(arg0);
-        students = this.dslContext.select(STUDENT.FIRST_NAME,
-                                     STUDENT.LAST_NAME,
-                                     STUDENT.ID,
-                                     STUDENT.DATE_OF_BIRTH,
-                                     STUDENT.SSN,
-                                     STUDENT.ADDRESS_1,
-                                     STUDENT.ADDRESS_2,
-                                     STUDENT.CITY,
-                                     STUDENT.STATE,
-                                     STUDENT.ZIP_CODE,
-                                     STUDENT.GRADE,
-                                     STUDENT.MOTHER_FIRST_NAME,
-                                     STUDENT.MOTHER_LAST_NAME,
-                                     STUDENT.MOTHER_SSN,
-                                     STUDENT.MOTHER_ADDRESS_1,
-                                     STUDENT.MOTHER_ADDRESS_2,
-                                     STUDENT.MOTHER_CITY, 
-                                     STUDENT.MOTHER_STATE,
-                                     STUDENT.MOTHER_ZIP_CODE,
-                                     STUDENT.MOTHER_HOME_PHONE,
-                                     STUDENT.MOTHER_CELL_PHONE,
-                                     STUDENT.MOTHER_EMAIL,
-                                     STUDENT.FATHER_FIRST_NAME,
-                                     STUDENT.FATHER_LAST_NAME,
-                                     STUDENT.FATHER_SSN,
-                                     STUDENT.FATHER_ADDRESS_1,
-                                     STUDENT.FATHER_ADDRESS_2,
-                                     STUDENT.FATHER_CITY, 
-                                     STUDENT.FATHER_STATE,
-                                     STUDENT.FATHER_ZIP_CODE,
-                                     STUDENT.FATHER_HOME_PHONE,
-                                     STUDENT.FATHER_CELL_PHONE,
-                                     STUDENT.FATHER_EMAIL)
-                             .from(STUDENT)
-                             .where(STUDENT.ID.eq(studentId))
-                             .fetch()
-                             .map(new StudentRecordMapper());
-        return students.get(0);*/
-
-        return null;
+        int studentId = Integer.parseInt(arg0);
+        students = this.dslContext.select(STUDENT.ID,
+                STUDENT.ACTIVE,
+                STUDENT.FIRSTNAME,
+                STUDENT.LASTNAME,
+                STUDENT.USER_ID)
+                .from(STUDENT)
+                .where(STUDENT.ID.eq(studentId))
+                .fetch()
+                .map(new StudentRecordMapper());
+        return students.get(0);
     }
     
     private boolean isDuplicateStudentRecord(Student student)
 	{
 		boolean studentExists = false;
-		/*int studentCount = this.dslContext
+		int studentCount = this.dslContext
 				.selectCount()
 				.from(STUDENT)
-				.where(STUDENT.FIRST_NAME.eq(student.getStudentFirstName()))
-				.and(STUDENT.LAST_NAME.eq(student.getStudentLastName()))
-				.and(STUDENT.DATE_OF_BIRTH.eq(student.getStudentDateOfBirth()))
+				.where(STUDENT.FIRSTNAME.eq(student.getStudentFirstName()))
+				.and(STUDENT.LASTNAME.eq(student.getStudentLastName()))
+				//.and(STUDENT.DATE_OF_BIRTH.eq(student.getStudentDateOfBirth()))
 				.fetchOne(0, int.class);
 		
 		if (studentCount != 0) {
 			studentExists = true;
-		}*/
+		}
 		return studentExists;
 	}
     
@@ -210,34 +149,35 @@ public class StudentRepositoryImpl implements StudentRepository
 	// TODO Auto-generated method stub
         String studentFirstName = arg0.getStudentFirstName();
         String studentLastName = arg0.getStudentLastName();
-        String studentDateOfBirth = arg0.getStudentDateOfBirth();
         
         //check for duplicate student record
-        /*if(isDuplicateStudentRecord(arg0)) {
+        if(isDuplicateStudentRecord(arg0)) {
         	Student student = new Student(studentFirstName, studentLastName);
         	return (S)student;
         }
         
-        Student iStudent = this.dslContext.insertInto(STUDENT, 
-                STUDENT.FIRST_NAME,
-                STUDENT.LAST_NAME,
-                STUDENT.DATE_OF_BIRTH)
-        .values(studentFirstName, studentLastName, 
-                studentDateOfBirth
+        this.dslContext.insertInto(STUDENT,
+                STUDENT.ACTIVE,
+                STUDENT.FIRSTNAME,
+                STUDENT.LASTNAME,
+                STUDENT.USER_ID)
+        .values("Y",
+                studentFirstName,
+                studentLastName,
+                1
                 )
         .returning(STUDENT.ID)
-        .fetchOne()
-        .map(new StudentRecordMapper());
-        
-        	Student newStudent = (Student)arg0;
-            newStudent.setStudentId(iStudent.getStudentId());
-            
-	        if(newStudent != null){
-	        	   LOGGER.info("Successfully added Student to DB: " + newStudent.toString());
-	        }
-        return (S)newStudent;*/
+        .execute();
 
-        return null;
+        //.fetchOne()
+        //.map(new StudentRecordMapper());
+        
+        Student newStudent = (Student)arg0;
+            
+        if(newStudent != null){
+            LOGGER.info("Successfully added Student to DB: " + newStudent.toString());
+        }
+        return (S)newStudent;
     }
 
     @Override
@@ -252,60 +192,28 @@ public class StudentRepositoryImpl implements StudentRepository
     {
 	return null;
     }
-    
-    @Override
-    public Student findStudent(StudentDTO studentDto) 
-    {	
-                
-                /*List<Student> students = new ArrayList<Student>();
-                students = this.dslContext.select(STUDENT.FIRST_NAME,
-                                             STUDENT.LAST_NAME,
-                                             STUDENT.ID,
-                                             STUDENT.DATE_OF_BIRTH,
-                                             STUDENT.SSN,
-                                             STUDENT.ADDRESS_1,
-                                             STUDENT.ADDRESS_2,
-                                             STUDENT.CITY,
-                                             STUDENT.STATE,
-                                             STUDENT.ZIP_CODE,
-                                             STUDENT.GRADE,
-                                             STUDENT.MOTHER_FIRST_NAME,
-                                             STUDENT.MOTHER_LAST_NAME,
-                                             STUDENT.MOTHER_SSN,
-                                             STUDENT.MOTHER_ADDRESS_1,
-                                             STUDENT.MOTHER_ADDRESS_2,
-                                             STUDENT.MOTHER_CITY, 
-                                             STUDENT.MOTHER_STATE,
-                                             STUDENT.MOTHER_ZIP_CODE,
-                                             STUDENT.MOTHER_HOME_PHONE,
-                                             STUDENT.MOTHER_CELL_PHONE,
-                                             STUDENT.MOTHER_EMAIL,
-                                             STUDENT.FATHER_FIRST_NAME,
-                                             STUDENT.FATHER_LAST_NAME,
-                                             STUDENT.FATHER_SSN,
-                                             STUDENT.FATHER_ADDRESS_1,
-                                             STUDENT.FATHER_ADDRESS_2,
-                                             STUDENT.FATHER_CITY, 
-                                             STUDENT.FATHER_STATE,
-                                             STUDENT.FATHER_ZIP_CODE,
-                                             STUDENT.FATHER_HOME_PHONE,
-                                             STUDENT.FATHER_CELL_PHONE,
-                                             STUDENT.FATHER_EMAIL)
-								 .from(STUDENT)
-								 .where(STUDENT.LAST_NAME.upper().eq(studentDto.getLastName().toUpperCase()))
-								 .and(STUDENT.FIRST_NAME.upper().eq(studentDto.getFirstName().toUpperCase()))
-								 .and(STUDENT.DATE_OF_BIRTH.eq(studentDto.getDateOfBirth()))
-								 .fetch()
-								 .map(new StudentRecordMapper());
-                
-                if(students.isEmpty()){
-                	return null;
-                }
-                
-                return students.get(0);*/
 
-                return null;
-                
+    @Override
+    public Student findStudent(StudentDTO studentDto) {
+
+        List<Student> students = new ArrayList<Student>();
+        students = this.dslContext.select(STUDENT.ID,
+                STUDENT.ACTIVE,
+                STUDENT.FIRSTNAME,
+                STUDENT.LASTNAME,
+                STUDENT.USER_ID)
+                .from(STUDENT)
+                .where(STUDENT.LASTNAME.upper().eq(studentDto.getLastName().toUpperCase()))
+                .and(STUDENT.FIRSTNAME.upper().eq(studentDto.getFirstName().toUpperCase()))
+                .fetch()
+                .map(new StudentRecordMapper());
+
+        if (students.isEmpty()) {
+            return null;
+        }
+
+        return students.get(0);
+
     }
     
     /**
@@ -336,6 +244,50 @@ public class StudentRepositoryImpl implements StudentRepository
         }*/
         
         return userID;
+    }
+
+    /**
+     * findLinkedStudents - Find all students with records linked to a user account with UID
+     * @param UID
+     */
+    public List<Student> findLinkedStudents(int userID)
+    {
+        //check link table and find any student IDs linked to user ID
+        /*List<AccountLinkStudent> linkRecords = new ArrayList<AccountLinkStudent>();
+        linkRecords = this.dslContext.select(ACCOUNT_LINK_STUDENT.DATE_LINKED,
+                ACCOUNT_LINK_STUDENT.ACTIVE,
+                ACCOUNT_LINK_STUDENT.USER_ID,
+                ACCOUNT_LINK_STUDENT.STUDENT_ID)
+                .from(ACCOUNT_LINK_STUDENT)
+                .where(ACCOUNT_LINK_STUDENT.USER_ID.eq(userID))
+                .fetch()
+                .map(new AccountLinkRecordMapper());
+
+
+        //add linked student id to List to be used in select to find Student Records
+        Vector linkedIDs = new Vector();
+        if(linkRecords != null && !linkRecords.isEmpty())
+        {
+            for(int i = 0; i < linkRecords.size(); i++)
+            {
+                linkedIDs.add( ((AccountLinkStudent)linkRecords.get(i)).getStudent_id() );
+            }
+        }*/
+
+        //find students with linked student IDs
+        List<Student> students = new ArrayList<Student>();
+        students = this.dslContext.select(
+                STUDENT.ID,
+                STUDENT.ACTIVE,
+                STUDENT.FIRSTNAME,
+                STUDENT.LASTNAME,
+                STUDENT.USER_ID)
+                .from(STUDENT)
+                .where(STUDENT.USER_ID.eq(userID))
+                .fetch()
+                .map(new StudentRecordMapper());
+        return students;
+
     }
     
     

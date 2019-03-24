@@ -1,12 +1,20 @@
 package com.csc625.checkin.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+import java.util.logging.Logger;
+
+import com.csc625.checkin.model.pojo.Student;
+import com.csc625.checkin.model.pojo.User;
+import com.csc625.checkin.service.StudentService;
+import javassist.bytecode.stackmap.TypeData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 //@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class StudentController 
 {
-    /*@Autowired
+    @Autowired
     private StudentService studentService;
     
     public StudentController(StudentService studentService)
@@ -15,9 +23,9 @@ public class StudentController
     }
     
     private static final Logger LOGGER = 
-                                    Logger.getLogger(ClassName.class.getName());
+                                    Logger.getLogger(TypeData.ClassName.class.getName());
     
-    @RequestMapping(value = "/all-students", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/all-students", method = RequestMethod.GET)
     public List<Student> allStudents()
     {
         LOGGER.info("allStudents endpoint hit");
@@ -31,7 +39,8 @@ public class StudentController
         LOGGER.info("getStudentById endpoint hit find id" + id);
         Student student = studentService.getStudentById(id);
         return student;
-    }
+    }*/
+
     @RequestMapping(value = "/create-student", method = RequestMethod.POST)
     public Student addStudent(@RequestBody Student student)
     {
@@ -40,7 +49,7 @@ public class StudentController
         return newStudent;
     }
     
-    @RequestMapping(value = "/get-student", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/get-student", method = RequestMethod.POST)
     public Student getStudent(@RequestBody StudentDTO studentDto)
     {	
     	LOGGER.info("Hit the get-student end point.");
@@ -56,7 +65,7 @@ public class StudentController
         
     	AccountLinkStudent accountLink = studentService.linkStudent(accountLinkDto);
         return accountLink;
-    }
+    }*/
     
     @RequestMapping(value = "/find-linked/{uid}", method = RequestMethod.GET)
     public List<Student> findLinked(@PathVariable("uid") int userID)
@@ -68,6 +77,6 @@ public class StudentController
     	List<Student> students = studentService.findLinkedStudents(user);
         //LOGGER.info("Here is the student we found: " + students);
         return students;
-    }*/
+    }
     
 }

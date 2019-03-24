@@ -1,48 +1,44 @@
 package com.csc625.checkin.controller;
 
+import com.csc625.checkin.database.tables.Qrcode;
+import com.csc625.checkin.model.dto.AccountDetailsDTO;
+import com.csc625.checkin.model.pojo.QRCode;
+import com.csc625.checkin.model.pojo.User;
+import com.csc625.checkin.service.QRService;
+import com.csc625.checkin.service.UserService;
+import javassist.bytecode.stackmap.TypeData.ClassName;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.servlet.http.HttpServletResponse;
-
-import com.csc625.checkin.model.dto.AccountDetailsDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.csc625.checkin.model.pojo.User;
-import com.csc625.checkin.service.UserService;
-
-import javassist.bytecode.stackmap.TypeData.ClassName;
-
 @RestController
-public class UserController {
+public class QRController {
 	private static final Logger LOGGER = Logger.getLogger(ClassName.class.getName());
 
 	@Autowired
-	private UserService userService;
+	private QRService qrService;
 
-	public UserController(UserService userService) {
-		this.userService = userService;
+	public QRController(QRService qrService) {
+		this.qrService = qrService;
 	}
 
-	@RequestMapping(value = "/add-user", method = RequestMethod.POST)
+    @RequestMapping(value = "/get-qr-code/{text}", method = RequestMethod.GET)
+    public QRCode getCode(@PathVariable("text") String text)
+    {
+        LOGGER.info("getCode endpoint hit find uid " + text);
+        qrService.test();
+        return null;
+    }
+
+	/*@RequestMapping(value = "/add-user", method = RequestMethod.POST)
 	public User addUser(@RequestBody AccountDetailsDTO accountDetails, HttpServletResponse response) {
 		LOGGER.info("Add user controller hit.");
 		User newUser = userService.addUser(accountDetails);
 		return newUser;
 	}
-	
-    @RequestMapping(value = "/get-user/{uid}", method = RequestMethod.GET)
-    public User getUser(@PathVariable("uid") String uid)
-    {
-        LOGGER.info("getUser endpoint hit find uid " + uid);
-        User user = userService.getUserByUID(uid);
-        return user;
-    }
     
     @RequestMapping(value = "/all-users", method = RequestMethod.GET)
     public List<User> allUsers()
@@ -57,6 +53,6 @@ public class UserController {
     {
         LOGGER.info("allUsers endpoint hit");
         return userService.logUserLogin(uid);
-    }
+    }*/
 }
 

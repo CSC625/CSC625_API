@@ -3,6 +3,7 @@ package com.csc625.checkin.service.impl;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.csc625.checkin.model.dto.AccountDetailsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +33,12 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private StudentService studentService;
 	
-	/*@Override
+	@Override
 	public User addUser(AccountDetailsDTO accountDetails) {
 		LOGGER.info("Adding user service hit...");
 		User u = userRepository.save(accountDetails.getUser());
 		
-		if(u.getUid() != null){
+		/*if(u.getUid() != null){
 			accountDetails.setUser(u);
 			
 			LOGGER.info("LOOK HERE FOR THE ROLE" + u.getRole().getName());
@@ -74,10 +75,10 @@ public class UserServiceImpl implements UserService{
 
 				}
 			}
-		}
+		}*/
 		
 		return u;
-	}*/
+	}
 
 	@Override
 	public User getUserByUID(String uid) {
@@ -91,6 +92,12 @@ public class UserServiceImpl implements UserService{
 		LOGGER.info("getAllUsers service hit");
 		List<User> users = (List<User>) userRepository.findAll();
 		return users;
+	}
+
+	@Override
+	public Boolean logUserLogin(String uid) {
+		LOGGER.info("Log user login service hit...");
+		return true;
 	}
 
 }

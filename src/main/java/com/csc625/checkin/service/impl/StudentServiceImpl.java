@@ -41,6 +41,9 @@ public class StudentServiceImpl implements StudentService
     public Student addStudent(Student student) 
     {
         Student newStudent = studentRepository.save(student);
+
+        //create new QR code for student
+
         return newStudent;
     }
     
@@ -58,11 +61,16 @@ public class StudentServiceImpl implements StudentService
     	StudentDTO s = new StudentDTO();
     	s.setFirstName(student.getStudentFirstName());
     	s.setLastName(student.getStudentLastName());
-    	s.setDateOfBirth(student.getStudentDateOfBirth());
         Student rs  = studentRepository.findStudent(s);
         if(rs  == null){
         	throw new NotFoundException("Could not find the student with those search parameters.");
         }
         return rs ;
+    }
+
+    public List <Student> findLinkedStudents(User user)
+    {
+        List<Student> students = (List<Student>) studentRepository.findLinkedStudents(user.getUserID());
+        return students;
     }
 }
