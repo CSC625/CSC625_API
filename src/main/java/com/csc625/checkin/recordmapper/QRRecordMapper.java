@@ -1,0 +1,46 @@
+package com.csc625.checkin.recordmapper;
+
+import com.csc625.checkin.model.pojo.QRCode;
+import com.csc625.checkin.model.pojo.Student;
+import com.csc625.checkin.model.pojo.User;
+import javassist.bytecode.stackmap.TypeData;
+import org.jooq.Record;
+import org.jooq.RecordMapper;
+
+import java.sql.Blob;
+import java.util.logging.Logger;
+
+import static com.csc625.checkin.database.tables.Qrcode.QRCODE;
+
+public class QRRecordMapper implements RecordMapper<Record, QRCode>{
+	private static final Logger LOGGER =
+			Logger.getLogger(TypeData.ClassName.class.getName());
+
+
+	@Override
+	public QRCode map(Record r) {
+
+		/*byte[] bytes = r.getValue(QRCODE.CODE);
+		LOGGER.info("BYTES : " + bytes);
+		Student student = new Student();
+		student.setStudentID(1);
+		Blob blob = null;
+		try {
+			blob = new javax.sql.rowset.serial.SerialBlob(bytes);
+		} catch(Exception e) {
+			LOGGER.info("ERROR in QR Mapper");
+		}*/
+
+		Student student = new Student();
+		student.setStudentID(1);
+
+		//r.getValue(QRCODE.STUDENT_ID)
+
+		return new QRCode(
+				r.getValue(QRCODE.ID),
+				student,
+				r.getValue(QRCODE.ACTIVE),
+				r.getValue(QRCODE.CODE));
+	}
+
+}

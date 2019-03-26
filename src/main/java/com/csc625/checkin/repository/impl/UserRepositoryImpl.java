@@ -15,7 +15,9 @@ import com.csc625.checkin.repository.UserRepository;
 import com.csc625.checkin.service.DBConnection;
 
 import javassist.bytecode.stackmap.TypeData.ClassName;
+import org.springframework.stereotype.Repository;
 
+@Repository("userRepository")
 public class UserRepositoryImpl implements UserRepository {
 
 	DSLContext dslContext = DBConnection.getConnection();

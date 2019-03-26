@@ -33,6 +33,21 @@ public class QRController {
         return null;
     }
 
+    @RequestMapping(value = "/get-qr-code-single/{id}", method = RequestMethod.GET)
+    public QRCode getCodeSingle(@PathVariable("id") int id)
+    {
+        LOGGER.info("getCode endpoint hit find uid " + id);
+        return qrService.getQRCode(String.valueOf(id));
+    }
+
+    @RequestMapping(value = "/all-qr-codes", method = RequestMethod.GET)
+    public List<QRCode> allQRCodes()
+    {
+        LOGGER.info("allQRCodes endpoint hit");
+        List<QRCode> qrCodes = qrService.getAllQRCodes();
+        return qrCodes;
+    }
+
 	/*@RequestMapping(value = "/add-user", method = RequestMethod.POST)
 	public User addUser(@RequestBody AccountDetailsDTO accountDetails, HttpServletResponse response) {
 		LOGGER.info("Add user controller hit.");
@@ -40,13 +55,7 @@ public class QRController {
 		return newUser;
 	}
     
-    @RequestMapping(value = "/all-users", method = RequestMethod.GET)
-    public List<User> allUsers()
-    {
-        LOGGER.info("allUsers endpoint hit");
-        List<User> users = userService.getAllUsers();
-        return users;
-    }
+
 
     @RequestMapping(value = "/log-user-login", method = RequestMethod.GET)
     public Boolean logUserLogin(@PathVariable("uid") String uid)

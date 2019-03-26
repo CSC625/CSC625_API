@@ -18,13 +18,13 @@ public class QRCode {
 	@JoinColumn(name = "Student_ID")
 	private Student student;
 	private String active;
-	private Blob code;
+	private byte[] code;
 
 	public QRCode() {
 
 	}
 
-	public QRCode(int qrID, Student student, String active, Blob code) {
+	public QRCode(int qrID, Student student, String active, byte[] code) {
 		this.qrID = qrID;
 		this.student = student;
 		this.active = active;
@@ -59,11 +59,11 @@ public class QRCode {
 		this.active = active;
 	}
 
-	public Blob getCode() {
+	public byte[] getCode() {
 		return code;
 	}
 
-	public void setCode(Blob code) {
+	public void setCode(byte[] code) {
 		this.code = code;
 	}
 

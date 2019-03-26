@@ -11,4 +11,5 @@ public interface QRService
     List <QRCode> getAllQRCodes();
     QRCode addQRCode(QRCode qrCode);
     Boolean test();
+    QRCode getQRCode(String id);
 }
