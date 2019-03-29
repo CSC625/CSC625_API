@@ -149,13 +149,14 @@ public class StudentRepositoryImpl implements StudentRepository
 	// TODO Auto-generated method stub
         String studentFirstName = arg0.getStudentFirstName();
         String studentLastName = arg0.getStudentLastName();
+        LOGGER.info("ABOUT TO SAVE STUDENT");
         
         //check for duplicate student record
         if(isDuplicateStudentRecord(arg0)) {
         	Student student = new Student(studentFirstName, studentLastName);
         	return (S)student;
         }
-        
+
         this.dslContext.insertInto(STUDENT,
                 STUDENT.ACTIVE,
                 STUDENT.FIRSTNAME,
@@ -168,16 +169,28 @@ public class StudentRepositoryImpl implements StudentRepository
                 )
         .returning(STUDENT.ID)
         .execute();
-
         //.fetchOne()
         //.map(new StudentRecordMapper());
-        
-        Student newStudent = (Student)arg0;
-            
+        LOGGER.info("STUDENT SAVED");
+
+        StudentDTO s = new StudentDTO();
+        s.setFirstName(studentFirstName);
+        s.setLastName(studentLastName);
+        Student newStudent = findStudent(s);
+
+        LOGGER.info("HERE NOW : " + newStudent.getStudentID());
+
         if(newStudent != null){
             LOGGER.info("Successfully added Student to DB: " + newStudent.toString());
         }
         return (S)newStudent;
+        
+        /*Student newStudent = (Student)arg0;
+            
+        if(newStudent != null){
+            LOGGER.info("Successfully added Student to DB: " + newStudent.toString());
+        }
+        return (S)newStudent;*/
     }
 
     @Override

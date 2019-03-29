@@ -3,6 +3,7 @@ package com.csc625.checkin.service.impl;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.csc625.checkin.service.QRService;
 import javassist.bytecode.stackmap.TypeData.ClassName;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class StudentServiceImpl implements StudentService
     
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private QRService qrService;
     
     public List<Student> getAllStudents() 
     {
@@ -43,6 +47,7 @@ public class StudentServiceImpl implements StudentService
         Student newStudent = studentRepository.save(student);
 
         //create new QR code for student
+        qrService.createQRCode(newStudent);
 
         return newStudent;
     }
@@ -73,4 +78,11 @@ public class StudentServiceImpl implements StudentService
         List<Student> students = (List<Student>) studentRepository.findLinkedStudents(user.getUserID());
         return students;
     }
+
+    public Student findStudent(int studentID)
+    {
+        Student student = studentRepository.findOne(String.valueOf(studentID));
+        return student;
+    }
+
 }

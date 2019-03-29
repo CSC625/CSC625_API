@@ -25,7 +25,7 @@ public class StudentRecordMapper implements RecordMapper<Record,Student>
         LOGGER.info("NAME:" + r.getValue(STUDENT.FIRSTNAME));
         LOGGER.info("VALUE:" + r.getValue(STUDENT.USER_ID));
 
-        if(STUDENT.USER_ID != null) {
+        if(r.getValue(STUDENT.USER_ID) != null) {
             user = new User(r.getValue(STUDENT.USER_ID));
         }
 

@@ -70,7 +70,7 @@ public class QRCode {
 	@Override
 	public String toString() {
 		return "QRCode [qrID=" + qrID + ", active=" + active + ", student=" + student
-				+ ", code=" + code + "]";
+				+ ", code=" + code.clone() + "]";
 	}
 
 }

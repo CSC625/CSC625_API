@@ -3,6 +3,7 @@ package com.csc625.checkin.service.impl;
 import com.amazonaws.util.IOUtils;
 import com.csc625.checkin.model.dto.AccountDetailsDTO;
 import com.csc625.checkin.model.pojo.QRCode;
+import com.csc625.checkin.model.pojo.Student;
 import com.csc625.checkin.model.pojo.User;
 import com.csc625.checkin.repository.QRRepository;
 import com.csc625.checkin.repository.StudentRepository;
@@ -22,6 +23,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.StandardCopyOption;
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -44,12 +46,13 @@ public class QRServiceImpl implements QRService {
 		return qrCodes;
 	}
 
-	public Boolean test() {
-		LOGGER.info("getAllUsers service hit");
+	public Boolean createQRCode(Student student) {
+		LOGGER.info("createQRCode service hit");
 		String test = "";
 
 		try {
-			URL url = new URL("https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=BLAHBLAHALYSSA");
+			String codeValue = student.getStudentFirstName() + student.getStudentLastName();
+			URL url = new URL("https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + codeValue);
 
 			//make connection
 			URLConnection urlc = url.openConnection();
@@ -80,6 +83,7 @@ public class QRServiceImpl implements QRService {
 			QRCode qrCode = new QRCode();
 			//Blob blob = new javax.sql.rowset.serial.SerialBlob(contents);
 			qrCode.setCode(contents);
+			qrCode.setStudent(student);
 			qrRepository.save(qrCode);
 
 
@@ -99,9 +103,11 @@ public class QRServiceImpl implements QRService {
 	}
 
 	@Override
-	public QRCode getQRCode(String id) {
+	public List<QRCode> getQRCode(String id) {
 		LOGGER.info("getQRCode service hit...");
-		return qrRepository.findOne(id);
+		List<QRCode> codes = new ArrayList<QRCode>();
+		codes.add(qrRepository.findOne(id));
+		return codes;
 	}
 
 }

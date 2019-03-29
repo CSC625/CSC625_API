@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import static com.csc625.checkin.database.Tables.QRCODE;
+import static com.csc625.checkin.database.Tables.STUDENT;
 
 @Repository("QRRepository")
 public class QRRepositoryImpl implements QRRepository {
@@ -37,7 +38,9 @@ public class QRRepositoryImpl implements QRRepository {
 		LOGGER.info("HIT SAVE QR CODE ");
 
 		Student student = new Student();
-		student.setStudentID(1);
+		LOGGER.info("QR : " + qrCode.toString());
+		student.setStudentID(qrCode.getStudent().getStudentID());
+		LOGGER.info("QR STUDENT ID : " + student.getStudentID());
 		/*long length = 0;
 		byte[] bytes = null;
 
@@ -81,9 +84,12 @@ public class QRRepositoryImpl implements QRRepository {
 		qrCodes = this.dslContext.select(QRCODE.ID,
 				QRCODE.STUDENT_ID,
 				QRCODE.ACTIVE,
-				QRCODE.CODE)
+				QRCODE.CODE,
+				STUDENT.FIRSTNAME,
+				STUDENT.LASTNAME)
 					.from(QRCODE)
-					.where(QRCODE.ID.eq(Integer.valueOf(id)))
+					.join(STUDENT).on(STUDENT.ID.eq(QRCODE.STUDENT_ID))
+					.where(QRCODE.STUDENT_ID.eq(Integer.valueOf(id)))
 					.fetch()
 					.map(new QRRecordMapper());
 		if (qrCodes.size() == 1) {

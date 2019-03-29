@@ -29,14 +29,14 @@ public class QRController {
     public QRCode getCode(@PathVariable("text") String text)
     {
         LOGGER.info("getCode endpoint hit find uid " + text);
-        qrService.test();
+        //qrService.createQRCode();
         return null;
     }
 
     @RequestMapping(value = "/get-qr-code-single/{id}", method = RequestMethod.GET)
-    public QRCode getCodeSingle(@PathVariable("id") int id)
+    public List<QRCode> getCodeSingle(@PathVariable("id") int id)
     {
-        LOGGER.info("getCode endpoint hit find uid " + id);
+        LOGGER.info("getCodeSingle endpoint hit find uid " + id);
         return qrService.getQRCode(String.valueOf(id));
     }
 

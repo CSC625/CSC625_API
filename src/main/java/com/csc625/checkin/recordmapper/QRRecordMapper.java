@@ -10,6 +10,7 @@ import org.jooq.RecordMapper;
 import java.sql.Blob;
 import java.util.logging.Logger;
 
+import static com.csc625.checkin.database.Tables.STUDENT;
 import static com.csc625.checkin.database.tables.Qrcode.QRCODE;
 
 public class QRRecordMapper implements RecordMapper<Record, QRCode>{
@@ -32,9 +33,9 @@ public class QRRecordMapper implements RecordMapper<Record, QRCode>{
 		}*/
 
 		Student student = new Student();
-		student.setStudentID(1);
-
-		//r.getValue(QRCODE.STUDENT_ID)
+		student.setStudentID(r.getValue(QRCODE.STUDENT_ID));
+		student.setStudentFirstName(r.getValue(STUDENT.FIRSTNAME));
+		student.setStudentLastName(r.getValue(STUDENT.LASTNAME));
 
 		return new QRCode(
 				r.getValue(QRCODE.ID),

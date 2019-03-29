@@ -11,6 +11,7 @@ public interface StudentService
     //Student getStudentById(String Id);
     Student addStudent(Student student);
     List <Student> findLinkedStudents(User user);
+    Student findStudent(int studentID);
 	/*Student getStudent(Student student);
 	Student getStudent(StudentDTO studentDto);
 	AccountLinkStudent linkStudent(AccountLinkStudentDTO accountLinkDto);

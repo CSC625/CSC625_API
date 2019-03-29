@@ -10,6 +10,6 @@ public interface QRService
 {
     List <QRCode> getAllQRCodes();
     QRCode addQRCode(QRCode qrCode);
-    Boolean test();
-    QRCode getQRCode(String id);
+    Boolean createQRCode(Student student);
+    List<QRCode> getQRCode(String id);
 }
