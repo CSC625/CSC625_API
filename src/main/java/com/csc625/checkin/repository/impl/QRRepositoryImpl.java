@@ -35,22 +35,9 @@ public class QRRepositoryImpl implements QRRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends QRCode> S save(S qrCode) {
-		LOGGER.info("HIT SAVE QR CODE ");
 
 		Student student = new Student();
-		LOGGER.info("QR : " + qrCode.toString());
 		student.setStudentID(qrCode.getStudent().getStudentID());
-		LOGGER.info("QR STUDENT ID : " + student.getStudentID());
-		/*long length = 0;
-		byte[] bytes = null;
-
-		try {
-			length = qrCode.getCode().length();
-			bytes = qrCode.getCode().getBytes(1, (int)length);
-		} catch(Exception e) {
-			LOGGER.info("ERROR GETTING BLOB LENGTH: ");
-		}*/
-
 
 		this.dslContext.insertInto(QRCODE,
 				QRCODE.STUDENT_ID,
@@ -58,8 +45,6 @@ public class QRRepositoryImpl implements QRRepository {
 				QRCODE.CODE)
 				.values(student.getStudentID(), "Y", qrCode.getCode())
 				.returning(QRCODE.ID)
-				//.fetchOne()
-				//.map(new UserRecordMapper());
 				.execute();
 
 		QRCode newQRCode = (QRCode)qrCode;
@@ -79,7 +64,6 @@ public class QRRepositoryImpl implements QRRepository {
 
 	@Override
 	public QRCode findOne(String id) {
-		LOGGER.info("In findOne impl: " + id);
 		List<QRCode> qrCodes = new ArrayList<QRCode>();
 		qrCodes = this.dslContext.select(QRCODE.ID,
 				QRCODE.STUDENT_ID,
@@ -93,7 +77,6 @@ public class QRRepositoryImpl implements QRRepository {
 					.fetch()
 					.map(new QRRecordMapper());
 		if (qrCodes.size() == 1) {
-			LOGGER.info("In findOne impl found one: ");
 			return qrCodes.get(0);
 		}
 		LOGGER.info("In findOne impl DIDNT FIND ONE: ");

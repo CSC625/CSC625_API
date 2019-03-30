@@ -1,26 +1,18 @@
 package com.csc625.checkin.repository.impl;
 
-
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Logger;
 
 import javassist.bytecode.stackmap.TypeData.ClassName;
 import static com.csc625.checkin.database.Tables.STUDENT;
-import static com.csc625.checkin.database.Tables.USER;
 
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
-import com.csc625.checkin.model.dto.AccountLinkStudentDTO;
 import com.csc625.checkin.model.dto.StudentDTO;
 import com.csc625.checkin.model.pojo.Student;
-import com.csc625.checkin.model.pojo.User;
 import com.csc625.checkin.recordmapper.StudentRecordMapper;
-import com.csc625.checkin.recordmapper.UserRecordMapper;
 import com.csc625.checkin.service.DBConnection;
 import com.csc625.checkin.repository.StudentRepository;
 
@@ -149,7 +141,7 @@ public class StudentRepositoryImpl implements StudentRepository
 	// TODO Auto-generated method stub
         String studentFirstName = arg0.getStudentFirstName();
         String studentLastName = arg0.getStudentLastName();
-        LOGGER.info("ABOUT TO SAVE STUDENT");
+        int userID = arg0.getUser().getUserID();
         
         //check for duplicate student record
         if(isDuplicateStudentRecord(arg0)) {
@@ -165,32 +157,20 @@ public class StudentRepositoryImpl implements StudentRepository
         .values("Y",
                 studentFirstName,
                 studentLastName,
-                1
+                userID
                 )
         .returning(STUDENT.ID)
         .execute();
-        //.fetchOne()
-        //.map(new StudentRecordMapper());
-        LOGGER.info("STUDENT SAVED");
 
         StudentDTO s = new StudentDTO();
         s.setFirstName(studentFirstName);
         s.setLastName(studentLastName);
         Student newStudent = findStudent(s);
 
-        LOGGER.info("HERE NOW : " + newStudent.getStudentID());
-
         if(newStudent != null){
             LOGGER.info("Successfully added Student to DB: " + newStudent.toString());
         }
         return (S)newStudent;
-        
-        /*Student newStudent = (Student)arg0;
-            
-        if(newStudent != null){
-            LOGGER.info("Successfully added Student to DB: " + newStudent.toString());
-        }
-        return (S)newStudent;*/
     }
 
     @Override
@@ -261,32 +241,10 @@ public class StudentRepositoryImpl implements StudentRepository
 
     /**
      * findLinkedStudents - Find all students with records linked to a user account with UID
-     * @param UID
+     * @param userID
      */
     public List<Student> findLinkedStudents(int userID)
     {
-        //check link table and find any student IDs linked to user ID
-        /*List<AccountLinkStudent> linkRecords = new ArrayList<AccountLinkStudent>();
-        linkRecords = this.dslContext.select(ACCOUNT_LINK_STUDENT.DATE_LINKED,
-                ACCOUNT_LINK_STUDENT.ACTIVE,
-                ACCOUNT_LINK_STUDENT.USER_ID,
-                ACCOUNT_LINK_STUDENT.STUDENT_ID)
-                .from(ACCOUNT_LINK_STUDENT)
-                .where(ACCOUNT_LINK_STUDENT.USER_ID.eq(userID))
-                .fetch()
-                .map(new AccountLinkRecordMapper());
-
-
-        //add linked student id to List to be used in select to find Student Records
-        Vector linkedIDs = new Vector();
-        if(linkRecords != null && !linkRecords.isEmpty())
-        {
-            for(int i = 0; i < linkRecords.size(); i++)
-            {
-                linkedIDs.add( ((AccountLinkStudent)linkRecords.get(i)).getStudent_id() );
-            }
-        }*/
-
         //find students with linked student IDs
         List<Student> students = new ArrayList<Student>();
         students = this.dslContext.select(
@@ -301,6 +259,23 @@ public class StudentRepositoryImpl implements StudentRepository
                 .map(new StudentRecordMapper());
         return students;
 
+    }
+
+    @Override
+    public Student findStudentByName(String name)
+    {
+        List<Student> students = new ArrayList<Student>();
+        //int studentId = Integer.parseInt(arg0);
+        students = this.dslContext.select(STUDENT.ID,
+                STUDENT.ACTIVE,
+                STUDENT.FIRSTNAME,
+                STUDENT.LASTNAME,
+                STUDENT.USER_ID)
+                .from(STUDENT)
+                .where(STUDENT.FIRSTNAME.concat(STUDENT.LASTNAME).upper().contains(name.toUpperCase()))
+                .fetch()
+                .map(new StudentRecordMapper());
+        return students.get(0);
     }
     
     

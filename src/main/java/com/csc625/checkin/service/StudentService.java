@@ -8,12 +8,8 @@ import com.csc625.checkin.model.pojo.User;
 public interface StudentService 
 {
     List <Student> getAllStudents();
-    //Student getStudentById(String Id);
     Student addStudent(Student student);
     List <Student> findLinkedStudents(User user);
     Student findStudent(int studentID);
-	/*Student getStudent(Student student);
-	Student getStudent(StudentDTO studentDto);
-	AccountLinkStudent linkStudent(AccountLinkStudentDTO accountLinkDto);
-	List <Student> findLinkedStudents(User user);*/
+    Student findStudentByName(String name);
 }

@@ -28,7 +28,7 @@ public class StudentController
     @RequestMapping(value = "/create-student", method = RequestMethod.POST)
     public Student addStudent(@RequestBody Student student)
     {
-    	LOGGER.info("Hit the add-student end point.");
+    	LOGGER.info("Hit the add-student end point for user.");
         Student newStudent = studentService.addStudent(student);
         return newStudent;
     }
@@ -50,6 +50,14 @@ public class StudentController
     {
         LOGGER.info("Hit the getStudent end point:" + studentID);
         Student student = studentService.findStudent(studentID);
+        return student;
+    }
+
+    @RequestMapping(value = "/get-student-by-name/{name}", method = RequestMethod.GET)
+    public Student getStudentByName(@PathVariable("name") String name)
+    {
+        LOGGER.info("Hit the getStudentByName end point:" + name);
+        Student student = studentService.findStudentByName(name);
         return student;
     }
     

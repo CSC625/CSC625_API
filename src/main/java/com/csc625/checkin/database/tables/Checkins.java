@@ -9,7 +9,7 @@ import com.csc625.checkin.database.Indexes;
 import com.csc625.checkin.database.Keys;
 import com.csc625.checkin.database.tables.records.CheckinsRecord;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Checkins extends TableImpl<CheckinsRecord> {
 
-    private static final long serialVersionUID = 972417445;
+    private static final long serialVersionUID = -984109267;
 
     /**
      * The reference instance of <code>checkin.checkins</code>
@@ -69,7 +69,7 @@ public class Checkins extends TableImpl<CheckinsRecord> {
     /**
      * The column <code>checkin.checkins.Check_In_Date</code>.
      */
-    public final TableField<CheckinsRecord, Date> CHECK_IN_DATE = createField("Check_In_Date", org.jooq.impl.SQLDataType.DATE.nullable(false), this, "");
+    public final TableField<CheckinsRecord, Timestamp> CHECK_IN_DATE = createField("Check_In_Date", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
 
     /**
      * Create a <code>checkin.checkins</code> table reference

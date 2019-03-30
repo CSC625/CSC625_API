@@ -20,18 +20,6 @@ public class QRRecordMapper implements RecordMapper<Record, QRCode>{
 
 	@Override
 	public QRCode map(Record r) {
-
-		/*byte[] bytes = r.getValue(QRCODE.CODE);
-		LOGGER.info("BYTES : " + bytes);
-		Student student = new Student();
-		student.setStudentID(1);
-		Blob blob = null;
-		try {
-			blob = new javax.sql.rowset.serial.SerialBlob(bytes);
-		} catch(Exception e) {
-			LOGGER.info("ERROR in QR Mapper");
-		}*/
-
 		Student student = new Student();
 		student.setStudentID(r.getValue(QRCODE.STUDENT_ID));
 		student.setStudentFirstName(r.getValue(STUDENT.FIRSTNAME));

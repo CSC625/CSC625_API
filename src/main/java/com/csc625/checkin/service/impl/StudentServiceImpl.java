@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.csc625.checkin.exceptions.NotFoundException;
-import com.csc625.checkin.model.dto.AccountLinkStudentDTO;
 import com.csc625.checkin.model.dto.StudentDTO;
 import com.csc625.checkin.model.pojo.Student;
 import com.csc625.checkin.model.pojo.User;
@@ -42,7 +41,7 @@ public class StudentServiceImpl implements StudentService
         return student;
     }   
     
-    public Student addStudent(Student student) 
+    public Student addStudent(Student student)
     {
         Student newStudent = studentRepository.save(student);
 
@@ -82,6 +81,12 @@ public class StudentServiceImpl implements StudentService
     public Student findStudent(int studentID)
     {
         Student student = studentRepository.findOne(String.valueOf(studentID));
+        return student;
+    }
+
+    public Student findStudentByName(String name)
+    {
+        Student student = studentRepository.findStudentByName(name);
         return student;
     }
 
