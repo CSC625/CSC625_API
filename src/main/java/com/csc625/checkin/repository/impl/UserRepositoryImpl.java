@@ -63,26 +63,23 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public User findOne(String id) {
-		/*List<User> users = new ArrayList<User>();
+	public User findOne(String uid) {
+		List<User> users = new ArrayList<User>();
 		users = this.dslContext.select(USER.ID,
-						USER.EMAIL,
-						USER.UID,
-						USER.LAST_LOGIN,
-						USER.INVALID_ATTEMPTS,
-						USER.ACTIVE,
-						USER.ROLE_ID,
-						ROLE.NAME,
-						USER.FIRSTNAME,
-						USER.LASTNAME)
+					USER.EMAIL,
+					USER.UID,
+					USER.LAST_LOGIN,
+					USER.ACTIVE,
+					USER.FIRSTNAME,
+					USER.LASTNAME)
 					.from(USER)
-					.join(ROLE).on(USER.ROLE_ID.eq(ROLE.ID))
-					.where(USER.UID.eq(id))
+					.where(USER.UID.eq(uid))
 					.fetch()
 					.map(new UserRecordMapper());
 		if (users.size() == 1) {
 			return users.get(0);
-		}*/
+		}
+
 		return null;
 	}
 
