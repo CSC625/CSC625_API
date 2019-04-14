@@ -32,7 +32,7 @@ public class CheckInController {
 	}
     
     @RequestMapping(value = "/all-checkins", method = RequestMethod.GET)
-    public List<CheckIn> allUsers()
+    public List<CheckIn> allCheckIns()
     {
         LOGGER.info("allcheckins endpoint hit");
         List<CheckIn> checkIns = checkInService.getAllCheckIns();

@@ -6,6 +6,7 @@ import org.jooq.Record;
 import org.jooq.RecordMapper;
 
 import static com.csc625.checkin.database.tables.Checkins.CHECKINS;
+import static com.csc625.checkin.database.tables.Student.STUDENT;
 
 public class CheckInRecordMapper implements RecordMapper<Record, CheckIn>{
 	
@@ -14,6 +15,8 @@ public class CheckInRecordMapper implements RecordMapper<Record, CheckIn>{
 	public CheckIn map(Record r) {
 
 		Student student = new Student(r.getValue(CHECKINS.STUDENT_ID));
+		student.setStudentFirstName(r.getValue(STUDENT.FIRSTNAME));
+		student.setStudentLastName(r.getValue(STUDENT.LASTNAME));
 
 		return new CheckIn(
 				r.getValue(CHECKINS.ID),

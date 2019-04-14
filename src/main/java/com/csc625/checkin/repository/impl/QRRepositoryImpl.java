@@ -100,15 +100,6 @@ public class QRRepositoryImpl implements QRRepository {
                              .fetch()
                              .map(new QRRecordMapper());
 
-		try {
-			File targetFile = new File("C:\\\\Users\\\\Zehzen\\\\Desktop\\\\test.png");
-			try (FileOutputStream stream = new FileOutputStream("C:\\\\Users\\\\Zehzen\\\\Desktop\\\\test.png")) {
-				stream.write(qrCodes.get(1).getCode());
-			}
-		}catch(Exception e) {
-			LOGGER.info("ERROR IN TEST FILE WRITE OUT");
-		}
-
         return qrCodes;
 	}
 

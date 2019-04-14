@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import static com.csc625.checkin.database.Tables.CHECKINS;
+import static com.csc625.checkin.database.Tables.QRCODE;
+import static com.csc625.checkin.database.Tables.STUDENT;
 
 @Repository("checkInRepository")
 public class CheckInRepositoryImpl implements CheckInRepository {
@@ -90,8 +92,11 @@ public class CheckInRepositoryImpl implements CheckInRepository {
 		List<CheckIn> checkIns = new ArrayList<CheckIn>();
 		checkIns = this.dslContext.select(CHECKINS.ID,
 						CHECKINS.STUDENT_ID,
-						CHECKINS.CHECK_IN_DATE)
+						CHECKINS.CHECK_IN_DATE,
+						STUDENT.FIRSTNAME,
+						STUDENT.LASTNAME)
                              .from(CHECKINS)
+							 .join(STUDENT).on(STUDENT.ID.eq(CHECKINS.ID))
                              .fetch()
                              .map(new CheckInRecordMapper());
         return checkIns;
