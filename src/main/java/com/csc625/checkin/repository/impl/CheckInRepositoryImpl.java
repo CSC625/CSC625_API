@@ -33,20 +33,18 @@ public class CheckInRepositoryImpl implements CheckInRepository {
 		java.util.Date utilDate = new java.util.Date();
 		java.sql.Timestamp sq = new java.sql.Timestamp(utilDate.getTime());
 
-		CheckIn inCheckIn = this.dslContext.insertInto(CHECKINS,
+		this.dslContext.insertInto(CHECKINS,
 						CHECKINS.STUDENT_ID,
 						CHECKINS.CHECK_IN_DATE)
 						.values(studentID, sq)
 						.returning(CHECKINS.ID, CHECKINS.STUDENT_ID, CHECKINS.CHECK_IN_DATE)
-						.fetchOne()
-						.map(new CheckInRecordMapper());
+						.execute();
 
-		CheckIn newCheckIn = (CheckIn)checkIn;
-		newCheckIn.setCheckInID(newCheckIn.getCheckInID());
+		CheckIn newCheckIn = new CheckIn();
         if(newCheckIn != null){
         	   LOGGER.info("Successfully added CheckIn to DB: " + newCheckIn.toString());
         }
-        
+
 		return (S)newCheckIn;
 
 	}
@@ -96,7 +94,7 @@ public class CheckInRepositoryImpl implements CheckInRepository {
 						STUDENT.FIRSTNAME,
 						STUDENT.LASTNAME)
                              .from(CHECKINS)
-							 .join(STUDENT).on(STUDENT.ID.eq(CHECKINS.ID))
+							 .join(STUDENT).on(STUDENT.ID.eq(CHECKINS.STUDENT_ID))
                              .fetch()
                              .map(new CheckInRecordMapper());
         return checkIns;
